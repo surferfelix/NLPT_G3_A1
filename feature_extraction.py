@@ -1,5 +1,7 @@
 import benepar, spacy
 import csv
+from spacy import displacy
+
 
 def read_data(path: str) -> list:
     '''reads the data to use for feature_extraction
@@ -24,6 +26,14 @@ def get_dependencies(input: list) -> list:
     dependencies = [token.dep_ for token in doc]
     return tokens, dependencies
 
+def vis_dependencies(input: list) -> list:
+    '''Visualize the dependency relation
+    :param doc: takes as input the dependencies to be visualized'''
+    nlp = initialise_spacy()
+    doc = nlp(input[0])
+    sentence_spans = list(doc.sents)
+    displacy.serve(sentence_spans, style="dep")
+    
 def get_constituents(input: list) -> list: 
     '''Will retrieve constituents for each text part in list'''
     #inspired by [https://github.com/nikitakit/self-attentive-parser][16-02-2022]
@@ -41,12 +51,26 @@ def get_constituents(input: list) -> list:
     #         if token.dep_ in ['attr', 'acomp'] and token.head.lemma_ == 'be':
     #             print([t.text for t in token.subtree])
 
+def get_head(input: list):
+    '''This function will return the head word in the sentence or subclause that is being iterated over'''
+    nlp = initialise_spacy()
+    doc = nlp(input[0])
+    span = doc[doc[4].left_edge.i : doc[4].right_edge.i+1]
+    container = []
+    tokens = []
+    with doc.retokenize() as retokenizer:
+        retokenizer.merge(span)
+    for token in doc:
+        tokens.append(tokens)
+        container.append(token.head.text)
+
+
 def main(data):
     #Pipeline goes in here
     to_extract = read_data(data)
     tokens, dependencies = get_dependencies(to_extract)
     consts = get_constituents(to_extract)
-    print(consts)
+    get_head(to_extract)
 
 if __name__ == '__main__':
     data = 'data/mini_data.tsv' # String to filepath in here
