@@ -1,0 +1,6 @@
+# Run the following
+pip install benepar
+pip install spacy
+python import benepar
+benepar.download('benepar_en3')
+exit()
