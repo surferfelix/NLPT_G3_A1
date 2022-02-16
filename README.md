@@ -34,10 +34,18 @@ The list contains a tuple-like output where the overarching items are in the out
 
 * Example: (S (NP (NP (DT The) (NN time)) (PP (IN for) (NP (NN action)))) (VP (VBZ is) (ADVP (RB now))) (. .))
 
-
 ### Head Extraction
 
 You can import the head extraction with,
 `from feature_extraction.py import get_head`
 Once this is done you can provide the text you wish to extract the head from as a string, and the model will provide output as a tuple.
 With the left item being the token, and the rightermost item being the head of that token.
+
+### Children Extraction
+
+You can import the children extraction with,
+`from feature_extraction.py import get_children`
+Once this is done you can provide the text you wish to extract the children from as a string, and the model will provide output as a tuple.
+With the left item being the token, and the rightermost item being all of the children of that token.
+
+* Example: heard, [said, “, have, you, let, ?, ”]
