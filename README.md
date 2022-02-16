@@ -1,4 +1,4 @@
-# HNLPT_G3_A1
+# NLPT_G3_A1
 
 The project was carried out by Felix den Heijer, Elena Weber, and Jingyue Zhang during the seminar ‘NLP Technology' taught by Antske Fokkens and Pia Sommerauer at VU Amsterdam.
 
