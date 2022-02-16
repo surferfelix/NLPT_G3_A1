@@ -51,8 +51,9 @@ def get_constituents(input: list) -> list:
     #         if token.dep_ in ['attr', 'acomp'] and token.head.lemma_ == 'be':
     #             print([t.text for t in token.subtree])
 
-def get_head(input: list):
-    '''This function will return the head word in the sentence or subclause that is being iterated over'''
+def get_head(input: list) -> tuple:
+    '''This function will return the head word in the sentence or subclause that is being iterated over
+    :return: tuple of two lists'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     span = doc[doc[4].left_edge.i : doc[4].right_edge.i+1]
@@ -63,15 +64,27 @@ def get_head(input: list):
     for token in doc:
         tokens.append(tokens)
         container.append(token.head.text)
+    return tokens, container
 
+def get_children(input: list) -> tuple:
+    '''Will return all children of target word
+    :return: tuple of two lists'''
+    nlp = initialise_spacy()
+    doc = nlp(input[0])
+    children = []
+    tokens = []
+    for token in doc:
+        tokens.append(token.text)
+        children.append(token.children)
+    return tokens, children
 
 def main(data):
     #Pipeline goes in here
     to_extract = read_data(data)
     tokens, dependencies = get_dependencies(to_extract)
     consts = get_constituents(to_extract)
-    get_head(to_extract)
-
+    tokens, heads = get_head(to_extract)
+    get_children(to_extract)
 if __name__ == '__main__':
     data = 'data/mini_data.tsv' # String to filepath in here
     main(data)
