@@ -2,7 +2,6 @@ import benepar, spacy
 import csv
 from spacy import displacy
 
-
 def read_data(path: str) -> list:
     '''reads the data to use for feature_extraction
     :param: data: string with path to tsv file'''
@@ -85,6 +84,7 @@ def main(data):
     consts = get_constituents(to_extract)
     tokens, heads = get_head(to_extract)
     get_children(to_extract)
+
 if __name__ == '__main__':
     data = 'data/mini_data.tsv' # String to filepath in here
     main(data)
