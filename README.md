@@ -12,6 +12,9 @@ The folder [**data**](https://github.com/surferfelix/NLPT_G3_A1/tree/main/data) 
 
 Before the feature extraction, three different parsers have been tried out: spaCy, NLTK with Stanford, and Stanza. In the end, it has been decided to use spaCy. The NLTK StanfordDependenyParser is being deprecated in the near future and thus does not contribute to further projects and since Stanza is running slower than spaCy it also has been decided against it.
 
+## Embeddings
+For the embeddings a folder called "models" is needed. It should contain the 
+
 ## Extracting Features
 
 For the purpose of this project, we provide several functions in order to extract several syntactical and morphological features to use for NLP related tasks.

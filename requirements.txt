@@ -1,6 +1,10 @@
 # Run the following
+# Developed using python 3.8.2
+pip install gensim
+pip install pandas
 pip install benepar
 pip install spacy
+pip install nltk
 python import benepar
 benepar.download('benepar_en3')
 exit()
