@@ -203,5 +203,5 @@ def main(data, path_to_emb = ''):
 
 if __name__ == '__main__':
     data = 'data/mini_data.tsv' # String to filepath in here
-    path_to_emb_model = '/Volumes/Samsung_T5/Text_Mining/Models/enwiki_20180420_100d.txt'
+    path_to_emb_model = ''
     main(data, path_to_emb_model)
