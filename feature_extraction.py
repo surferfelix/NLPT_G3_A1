@@ -26,7 +26,9 @@ def initialise_spacy():
     return nlp
 
 def get_dependencies(input: list) -> list:
-    '''Will retrieve dependencies for each text part in list'''
+    '''Will retrieve dependencies for each text part in list
+    :param: 
+    :return: returns the tokens and their dependencies'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     tokens = [token.text for token in doc]
@@ -140,7 +142,7 @@ def get_inflection_type(input, embeddingmodel = False) -> list:
     doc = nlp(input[0])
     # Inspired by DOI:10.3115/1117601.1117615 to figure this out
     # 1. Selecting candidate affixes
-    candidate_suffixes = ['s', 'ed', 'es', 'ing', 'e', 'eful']
+    candidate_suffixes = ['s', 'ed', 'es', 'ing', 'e', 'eful'] # These can be adjusted according to what type of inflection you want to look for
     # 2. Getting co-occurence matrix for words with these affixes
     tokens = [token.text for token in doc]
     if not embeddingmodel:
@@ -171,6 +173,10 @@ def get_inflection_type(input, embeddingmodel = False) -> list:
     return regular_infl
 
 def token_as_emb(input: str, embeddingmodel) -> list:
+    '''Tokenises the input and returns embedding_representations for all tokens
+    :param input: the string with text to tokenize and convert
+    :type embeddingmodel: a loaded KeyedVector embeddingmodel, or empty if to get co-occurences from input
+    :return: a list of 100 dimensional vectors'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     tokens = [token.text for token in doc]
@@ -187,7 +193,7 @@ def token_as_emb(input: str, embeddingmodel) -> list:
             vector = [0] *100
         vector_reps.append(vector)
     return vector_reps
-    
+
 def get_word_ngrams(input: str) -> list:
     '''
     This function generates n word ngrams
@@ -215,9 +221,9 @@ def main(data, path_to_emb = ''):
     pos_tags = get_pos(to_extract)
     prev_token = get_prev(to_extract)
     next_token = get_next(to_extract)
-    # word_n_grams = get_word_ngrams(to_extract)
+    
     regular_infl_words = get_inflection_type(to_extract, word_vectors)
-    #print(regular_infl_words)
+    
 
 if __name__ == '__main__':
     data = 'data/mini_data.tsv' # String to filepath in here
