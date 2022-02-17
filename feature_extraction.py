@@ -170,6 +170,24 @@ def get_inflection_type(input, embeddingmodel = False) -> list:
     print(regular_infl)
     return regular_infl
 
+def token_as_emb(input: str, embeddingmodel) -> list:
+    nlp = initialise_spacy()
+    doc = nlp(input[0])
+    tokens = [token.text for token in doc]
+    vector_reps = []
+    if not embeddingmodel:
+        language_model = Word2Vec(tokens, min_count=200) # Change min_count for smaller datasets (needs to be proportional)
+        language_model = language_model.wv
+    elif embeddingmodel:
+        language_model = embeddingmodel
+    for token in tokens:
+        if token in language_model:
+            vector = language_model[token]
+        else: 
+            vector = [0] *100
+        vector_reps.append(vector)
+    return vector_reps
+    
 def get_word_ngrams(input: str) -> list:
     '''
     This function generates n word ngrams

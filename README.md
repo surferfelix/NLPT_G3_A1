@@ -13,9 +13,7 @@ The folder [**data**](https://github.com/surferfelix/NLPT_G3_A1/tree/main/data) 
 Before the feature extraction, three different parsers have been tried out: spaCy, NLTK with Stanford, and Stanza. In the end, it has been decided to use spaCy. The NLTK StanfordDependenyParser is being deprecated in the near future and thus does not contribute to further projects and since Stanza is running slower than spaCy it also has been decided against it.
 
 ## Embeddings
-If you'd like to use pre-trained word embeddings (especially handy if size of input is small), then assign the path to the word embedding model to the 
-`path_to_emb_model` variable. 
-
+If you'd like to use pre-trained word embeddings (especially handy if size of input is small), then assign the path to the word embedding model to the `path_to_emb_model` variable. Note that the model should be txt not bin. the current implementation only supports 100 dimension embedding representations.
 
 ## Extracting Features
 
