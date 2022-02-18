@@ -27,7 +27,7 @@ def initialise_spacy():
 
 def get_dependencies(input: list) -> list:
     '''Will retrieve dependencies for each text part in list
-    :param: 
+    :param: takes a list as an input 
     :return: returns the tokens and their dependencies'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
@@ -44,7 +44,9 @@ def vis_dependencies(input: list) -> list:
     displacy.serve(sentence_spans, style="dep")
     
 def get_constituents(input: list) -> list: 
-    '''Will retrieve constituents for each text part in list'''
+    '''Will retrieve constituents for each text part in list
+    :param: takes a list as an input
+    return: returns a container with the constituents after parsing'''
     #inspired by [https://github.com/nikitakit/self-attentive-parser][16-02-2022]
     nlp = initialise_spacy()
     nlp.add_pipe('benepar', config = {'model':'benepar_en3'})
@@ -88,7 +90,8 @@ def get_children(input: list) -> tuple:
     return tokens, children
 
 def get_lemma(input: str) -> list:
-    '''Will return a list of lemmas'''
+    '''Will return a list of lemmas
+    return: list of lemmas'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     lemma = []
@@ -97,7 +100,8 @@ def get_lemma(input: str) -> list:
     return lemma
 
 def get_pos(input: str) -> list:
-    '''Will return a list of POS tags'''
+    '''Will return a list of POS tags
+    :return: list of pos-tags'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     pos_tags = []
@@ -106,7 +110,8 @@ def get_pos(input: str) -> list:
     return pos_tags
 
 def get_prev(input: str) -> list:
-    '''Will return a list of previous token'''
+    '''Will return a list of previous token
+    :return: list of previous token'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     tokens = [token for token in doc]
@@ -120,7 +125,8 @@ def get_prev(input: str) -> list:
     return prev_tokens
 
 def get_next(input: str) -> list:
-    '''Will return a list of next token'''
+    '''Will return a list of next token
+    :return: list of next token'''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     tokens = [token for token in doc]
@@ -133,7 +139,8 @@ def get_next(input: str) -> list:
         next_tokens.append(next)
     return next_tokens
 
-def get_inflection_type(input, embeddingmodel = False) -> list:
+def get_inflection_type(input, embeddingmodel = False, candidate_suffixes = ['s', 'ed', 'es', 'ing', 'e', 'eful'],
+ word_or_vector = "w") -> list:
     '''Morphology classification using w2v. Will return a list of regular inflections
     :param embeddingmodel:, a gensim loaded w2v style embedding model. If you wish to use the inputs own
     vocabulary to train a model, you can leave this empty
@@ -142,7 +149,7 @@ def get_inflection_type(input, embeddingmodel = False) -> list:
     doc = nlp(input[0])
     # Inspired by DOI:10.3115/1117601.1117615 to figure this out
     # 1. Selecting candidate affixes
-    candidate_suffixes = ['s', 'ed', 'es', 'ing', 'e', 'eful'] # These can be adjusted according to what type of inflection you want to look for
+    candidate_suffixes = candidate_suffixes # These can be adjusted according to what type of inflection you want to look for
     # 2. Getting co-occurence matrix for words with these affixes
     tokens = [token.text for token in doc]
     if not embeddingmodel:
@@ -168,11 +175,13 @@ def get_inflection_type(input, embeddingmodel = False) -> list:
             w,v = word
             for suf in candidate_suffixes:
                 if w.endswith(suf):
-                    regular_infl.append(w)
-    print(regular_infl)
+                    if word_or_vector == 'w':
+                        regular_infl.append(w)
+                    elif word_or_vector == 'v':
+                        regular_infl.append(v)
     return regular_infl
 
-def token_as_emb(input: str, embeddingmodel) -> list:
+def token_as_emb(input: str, embeddingmodel = '') -> list:
     '''Tokenises the input and returns embedding_representations for all tokens
     :param input: the string with text to tokenize and convert
     :type embeddingmodel: a loaded KeyedVector embeddingmodel, or empty if to get co-occurences from input
@@ -194,16 +203,17 @@ def token_as_emb(input: str, embeddingmodel) -> list:
         vector_reps.append(vector)
     return vector_reps
 
-def get_word_ngrams(input: str) -> list:
+def get_word_ngrams(input: str, n: int) -> list:
     '''
     This function generates n word ngrams
+    :param n: The window size of the n grams at lexical level. 
     :return: all possible ngrams
     '''
     nlp = initialise_spacy()
     doc = nlp(input[0])
     tokens = [token for token in doc]
 
-    word_grams= pd.Series(nltk.ngrams(tokens, pad_right = True))
+    word_grams= pd.Series(nltk.ngrams(tokens, n, pad_right = True))
     
     return word_grams
 
