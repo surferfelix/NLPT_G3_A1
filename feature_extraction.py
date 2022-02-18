@@ -1,13 +1,11 @@
 import benepar, spacy
-import csv
 from spacy import displacy
-import gensim
 from gensim.models import Word2Vec
 import nltk
 from nltk.stem import WordNetLemmatizer
 import pandas as pd
 from gensim.models import KeyedVectors
-import os
+
 
 def read_data(path: str) -> list:
     '''reads the data to use for feature_extraction
